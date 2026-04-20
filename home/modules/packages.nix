@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs, inputs, ...}:
 
 {
     home.packages = with pkgs; [
@@ -34,7 +34,7 @@
     postman
     steam
     stremio-linux-shell
-    zed-editor
+     inputs.zed.packages.${pkgs.system}.default
 
     # Hyprland ecosystem
     waybar

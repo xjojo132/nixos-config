@@ -5,6 +5,8 @@
     # Pin nixpkgs to a specific channel — "nixos-unstable" for latest packages
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+     zed.url = "github:zed-industries/zed";
+
     # Home Manager — must follow the same nixpkgs
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -12,7 +14,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, zed, ... }@inputs:
   let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
@@ -32,6 +34,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = { inherit inputs; };
           home-manager.users.xander = import ./home/home.nix;
         }
       ];
