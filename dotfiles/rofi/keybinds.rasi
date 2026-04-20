@@ -1,0 +1,57 @@
+* {
+    background-color: transparent;
+    text-color:       #e0def4;
+}
+
+window {
+    width:            700px;
+    background-color: #232136ee;
+    border-radius:    12px;
+    padding:          20px;
+    border:           1px;
+    border-color:     #393552;
+}
+
+mainbox {
+    spacing: 12px;
+}
+
+inputbar {
+    children:         [prompt, entry];
+    background-color: #2a273f;
+    border-radius:    8px;
+    padding:          8px 12px;
+    spacing:          8px;
+}
+
+prompt {
+    text-color: #c4a7e7;
+}
+
+entry {
+    placeholder:       "Search keybinds...";
+    placeholder-color: #6e6a86;
+}
+
+listview {
+    lines:     15;
+    columns:   1;
+    scrollbar: false;
+    spacing:   4px;
+}
+
+element {
+    padding:          6px 10px;
+    border-radius:    6px;
+    background-color: transparent;
+}
+
+element selected {
+    background-color: #393552;
+    text-color:       #c4a7e7;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+}

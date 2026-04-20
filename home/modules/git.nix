@@ -3,10 +3,10 @@
 {
   programs.git = {
     enable = true;
-    userName = "xjojo132";
-    userEmail = "xj.remmelink@gmail.com";
+    settings.user.name = "xjojo132";
+    settings.user.email = "xj.remmelink@gmail.com";
 
-    extraConfig = {
+    settings = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = false;
@@ -14,7 +14,7 @@
     };
 
     # Your aliases
-    aliases = {
+    settings.aliases = {
       st = "status";
       lg = "log --oneline --graph --decorate";
       undo = "reset HEAD~1 --mixed";
