@@ -1,0 +1,177 @@
+/* ── Spider-Verse palette ─────────────────────────────────────────────────── */
+/* Extracted from Into the Spider-Verse (2018) — Miles falling scene          */
+@define-color base      #1a1829;
+@define-color mantle    #12111e;
+@define-color crust     #0c0b15;
+@define-color surface0  #2e2b45;
+@define-color surface1  #3d3a58;
+@define-color overlay0  #6b6882;
+@define-color text      #d4ccf0;
+@define-color subtext0  #9b97b8;
+@define-color blue      #4ddeff;
+@define-color lavender  #c966ff;
+@define-color green     #3dff7a;
+@define-color yellow    #ffe566;
+@define-color peach     #ff7744;
+@define-color red       #ff2244;
+@define-color mauve     #9955ff;
+@define-color teal      #00e0cc;
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+  font-size: 13px;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+}
+
+window#waybar {
+  background: alpha(@crust, 0.90);
+  color: @text;
+  border-bottom: 1px solid alpha(@surface1, 0.5);
+}
+
+tooltip {
+  background: @mantle;
+  border: 1px solid alpha(@lavender, 0.4);
+  border-radius: 10px;
+  color: @text;
+  padding: 6px 12px;
+}
+
+tooltip label {
+  color: @text;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  padding: 0 6px;
+}
+
+#workspaces,
+#clock,
+#pulseaudio,
+#network,
+#cpu,
+#memory,
+#temperature,
+#battery,
+#tray,
+#custom-power {
+  padding: 2px 10px;
+  margin: 4px 2px;
+  border-radius: 8px;
+  background: transparent;
+  color: @text;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+#workspaces {
+  background: alpha(@surface0, 0.5);
+  border-radius: 10px;
+  padding: 0 4px;
+  margin: 4px 4px;
+}
+
+#workspaces button {
+  padding: 1px 10px;
+  margin: 3px 2px;
+  border-radius: 7px;
+  background: transparent;
+  color: @overlay0;
+  transition: all 0.15s ease;
+}
+
+#workspaces button:hover {
+  background: alpha(@surface1, 0.7);
+  color: @text;
+}
+
+#workspaces button.active {
+  background: @mauve;
+  color: @base;
+  font-weight: bold;
+}
+
+#workspaces button.urgent {
+  background: @red;
+  color: @base;
+}
+
+#window {
+  background: transparent;
+  color: @overlay0;
+  font-style: italic;
+  padding: 2px 8px;
+}
+
+#clock {
+  background: alpha(@surface0, 0.6);
+  color: @lavender;
+  font-weight: bold;
+  border-radius: 10px;
+  letter-spacing: 0.03em;
+}
+
+#pulseaudio        { color: @teal; }
+#pulseaudio.muted  { color: @overlay0; }
+
+#network              { color: @green; }
+#network.disconnected { color: @red; }
+
+#cpu    { color: @peach; }
+#memory { color: @blue; }
+
+#temperature          { color: @yellow; }
+#temperature.critical {
+  color: @red;
+  animation: blink 1s linear infinite;
+}
+
+#battery              { color: @green; }
+#battery.warning      { color: @yellow; }
+#battery.charging     { color: @teal; }
+#battery.critical:not(.charging) {
+  color: @red;
+  animation: blink 1s linear infinite;
+}
+
+#tray {
+  background: transparent;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#custom-power {
+  color: alpha(@red, 0.7);
+  font-size: 14px;
+  padding: 2px 10px;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+}
+
+#custom-power:hover {
+  background: alpha(@red, 0.15);
+  color: @red;
+}
+
+#pulseaudio:hover,
+#network:hover,
+#cpu:hover,
+#memory:hover,
+#temperature:hover,
+#battery:hover {
+  background: alpha(@surface0, 0.6);
+  border-radius: 8px;
+}
+
+@keyframes blink {
+  to {
+    color: @base;
+    background: @red;
+    border-radius: 8px;
+  }
+}
