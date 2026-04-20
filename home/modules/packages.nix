@@ -46,6 +46,27 @@
     grim
     slurp
     quickshell
+
+    # LSPs
+    nixd
+    typescript-language-server
+    typescript
+    rust-analyzer
+    python3Packages.python-lsp-server
+    vscode-langservers-extracted
+    bash-language-server
+    marksman
+    taplo
+    hyprls
+
+    # Formatters
+    alejandra
+    prettier
+
+    # Python
+    python3
+    python3Packages.pip
+    uv
   ];
 
 }

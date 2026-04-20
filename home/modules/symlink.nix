@@ -10,6 +10,7 @@ let
     "zed"           = "zed";
     "starship.toml" = "starship/starship.toml";
     "rofi" = "rofi";
+    "helix" = "helix";
   };
 
   # homeLinks = {

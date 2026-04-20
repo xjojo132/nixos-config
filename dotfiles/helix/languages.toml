@@ -1,0 +1,38 @@
+
+[[language]]
+name = "nix"
+auto-format = true
+formatter = { command = "alejandra" }
+language-servers = ["nixd"]
+
+[language-server.nixd]
+command = "nixd"
+
+[[language]]
+name = "hyprlang"
+auto-format = false
+language-servers = ["hyprls"]
+
+[language-server.hyprls]
+command = "hyprls"
+
+[[language]]
+name = "typescript"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+[[language]]
+name = "javascript"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "babel"] }
+
+[[language]]
+name = "tsx"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "typescript"] }
+
+# --- JSON (prettier) ---
+[[language]]
+name = "json"
+auto-format = true
+formatter = { command = "prettier", args = ["--parser", "json"] }
