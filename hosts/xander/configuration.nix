@@ -1,11 +1,7 @@
-
-{ config, pkgs, ... }:
-
-{
-  imports =
-    [
-      ./hardware-configuration.nix
-    ];
+{pkgs, ...}: {
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -33,8 +29,7 @@
     LC_TIME = "nl_NL.UTF-8";
   };
 
-  nix.settings.experimental-features = ["nix-command" "flakes" ];
-
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   services.xserver.enable = true;
   # Enable the KDE Plasma Desktop Environment.
@@ -55,7 +50,7 @@
   };
 
   hardware.graphics.enable = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = true;
@@ -63,8 +58,8 @@
     # For hybrid GPU (Intel + Nvidia) like your MSI
     prime = {
       offload.enable = true;
-      
-      intelBusId = "PCI:0:2:0"; 
+
+      intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
     };
   };
@@ -80,7 +75,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-   };
+  };
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
@@ -89,11 +84,11 @@
   users.users.xander = {
     isNormalUser = true;
     description = "Xander Remmelink";
-    extraGroups = [ "networkmanager" "wheel" "video" ];
+    extraGroups = ["networkmanager" "wheel" "video"];
     shell = pkgs.zsh;
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -102,12 +97,12 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-  
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  	  vim
-	git
+    vim
+    git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -136,5 +131,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }

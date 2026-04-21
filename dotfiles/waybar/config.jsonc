@@ -7,7 +7,6 @@
   "exclusive": true,
   "passthrough": false,
   "gtk-layer-shell": true,
-
   // ─── Modules ──────────────────────────────────────────────────────────────
   "modules-left": [
     "hyprland/workspaces",
@@ -26,7 +25,6 @@
     "battery",
     "custom/power"
   ],
-
   // ─── Workspaces ───────────────────────────────────────────────────────────
   "hyprland/workspaces": {
     "format": "{icon}",
@@ -36,17 +34,21 @@
       "urgent": "󱐋",
     },
     "persistent-workspaces": {
-      "*": [1, 2, 3, 4, 5],
+      "*": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
     },
   },
-
   // ─── Active Window ────────────────────────────────────────────────────────
   "hyprland/window": {
     "format": "  {}",
     "max-length": 50,
     "separate-outputs": true,
   },
-
   // ─── Clock ────────────────────────────────────────────────────────────────
   "clock": {
     "format": "󰃭  {:%a %d %b   %H:%M}",
@@ -64,21 +66,23 @@
       },
     },
   },
-
   // ─── Audio ────────────────────────────────────────────────────────────────
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-muted": "󰝟  Muted",
     "format-icons": {
       "headphone": "󰋋",
-      "default": ["󰕿", "󰖀", "󰕾"],
+      "default": [
+        "󰕿",
+        "󰖀",
+        "󰕾"
+      ],
     },
     "on-click": "pavucontrol",
     "on-scroll-up": "pamixer -i 2",
     "on-scroll-down": "pamixer -d 2",
     "smooth-scrolling-threshold": 1,
   },
-
   // ─── Network ──────────────────────────────────────────────────────────────
   "network": {
     "format-wifi": "󰤨 {essid}",
@@ -88,7 +92,6 @@
     "tooltip-format-ethernet": "{ifname}\n{ipaddr}/{cidr}",
     "on-click": "kitty -e nmtui",
   },
-
   // ─── CPU ──────────────────────────────────────────────────────────────────
   // not used rn but saving it for later
   // "cpu": {
@@ -97,7 +100,6 @@
   //   "interval": 2,
   //   "on-click": "kitty -e btop",
   // },
-
   // ─── Memory ───────────────────────────────────────────────────────────────
   "memory": {
     "format": "󰍛 {used:0.1f}G",
@@ -105,16 +107,18 @@
     "interval": 5,
     "on-click": "kitty -e btop",
   },
-
   // ─── Temperature ──────────────────────────────────────────────────────────
   "temperature": {
     "thermal-zone": 2,
     "critical-threshold": 80,
     "format": "{icon} {temperatureC}°C",
     "format-critical": "󰸁  {temperatureC}°C",
-    "format-icons": ["󱃃", "󰔏", "󱃂"],
+    "format-icons": [
+      "󱃃",
+      "󰔏",
+      "󱃂"
+    ],
   },
-
   // ─── Battery ──────────────────────────────────────────────────────────────
   "battery": {
     "states": {
@@ -124,23 +128,32 @@
     "format": "{icon}  {capacity}%",
     "format-charging": "󰂄  {capacity}%",
     "format-plugged": "󰚥  {capacity}%",
-    "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂",
+      "󰁹"
+    ],
     "tooltip-format": "{timeTo}\nPower draw: {power}W",
   },
-
   // ─── System Tray ──────────────────────────────────────────────────────────
   "tray": {
     "icon-size": 16,
     "spacing": 8,
   },
-
   // ─── Power Menu ───────────────────────────────────────────────────────────
   "custom/power": {
     "format": "⏻",
     "tooltip": false,
     "on-click": "~/.config/waybar/scripts/power-menu.sh",
   },
-
   // ─── music ───────────────────────────────────────────────────────────
   "mpris": {
     "format": "{player_icon} {dynamic}",
@@ -154,6 +167,9 @@
       "paused": "⏸",
     },
     "dynamic-len": 40,
-    "dynamic-order": ["title", "artist"],
+    "dynamic-order": [
+      "title",
+      "artist"
+    ],
   },
 }

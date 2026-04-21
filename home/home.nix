@@ -1,6 +1,7 @@
-{ config, lib,  pkgs, ... }:
-
-{
+{...}: {
+  home.sessionVariables = {
+    TERMINAL = "kitty";
+  };
   imports = [
     ./modules/git.nix
     ./modules/packages.nix

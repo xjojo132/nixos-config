@@ -1,6 +1,5 @@
 theme = "rose_pine_moon"
 
-
 [editor]
 line-number = "relative"
 mouse = false
@@ -21,3 +20,14 @@ hidden = false
 left = ["mode", "spinner", "file-name"]
 right = ["diagnostics", "selections", "position", "file-encoding"]
 
+[keys.normal]
+y = "yank_to_clipboard"
+p = "paste_clipboard_after"
+P = "paste_clipboard_before"
+d = ["yank_to_clipboard", "delete_selection"]
+
+[keys.select]
+y = "yank_to_clipboard"
+p = "paste_clipboard_after"
+P = "paste_clipboard_before"
+d = ["yank_to_clipboard", "delete_selection"]
