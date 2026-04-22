@@ -1,7 +1,12 @@
-{pkgs, inputs, ...}:
-
 {
-    home.packages = with pkgs; [
+  pkgs,
+  inputs,
+  ...
+}: {
+  home.packages = with pkgs; [
+    #fonts
+    nerd-fonts.jetbrains-mono
+
     # Terminal & shell tools
     kitty
     starship
@@ -19,7 +24,8 @@
     pavucontrol
     postgresql
     yazi
-    
+    lazygit
+
     # Apps
     firefox
     vesktop
@@ -34,7 +40,7 @@
     postman
     steam
     stremio-linux-shell
-     inputs.zed.packages.${pkgs.system}.default
+    zed-editor
 
     # Hyprland ecosystem
     waybar
@@ -68,5 +74,4 @@
     python3Packages.pip
     uv
   ];
-
 }
