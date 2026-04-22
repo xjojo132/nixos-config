@@ -1,6 +1,6 @@
 # nixos-config
 
-Xander's NixOS configuration using flakes and Home Manager.
+My personal NixOS configuration using flakes and Home Manager.
 
 ## Structure
 
@@ -21,7 +21,7 @@ nixos-config/
 
 ### 1. Install NixOS
 
-Boot from the NixOS ISO and run the installer. Once you're in a shell:
+Boot from the NixOS graphical/minimal ISO and run the installer. Once you're in a shell:
 
 ### 2. Clone this repo
 
@@ -38,6 +38,11 @@ The `hardware-configuration.nix` in this repo is specific to my machine. Replace
 nixos-generate-config --show-hardware-config > hosts/xander/hardware-configuration.nix
 ```
 
+or to just copy if you have a existing `hardware-configuration.nix`
+
+```bash
+cp /etc/nixos/hardware-configuration.nix ~/nixos-config/hosts/xander/hardware-configuration.nix
+```
 > Review the output and make sure the disk UUIDs and kernel modules look correct before continuing.
 
 ### 4. Apply the config
@@ -108,3 +113,18 @@ This will:
 2. Run `nix flake update` to bump all inputs (nixpkgs, home-manager)
 3. Rebuild and switch with `sudo nixos-rebuild switch --flake '.#xander'`
 4. Commit the updated `flake.lock` and push to GitHub
+
+---
+
+## Adding new config 
+
+For new config, add a row here in `home.nix` (note the entire dir gets symlinked):
+
+```bash
+
+xdgLinks = {
+    "hypr" = "hypr";
+    "kitty" = "kitty";
+    "DIR_NAME_FROM_DOTFILES_DIR" = "DIR_NAME_THAT_WILL_BE_IN_~/.config";
+  };  
+```
