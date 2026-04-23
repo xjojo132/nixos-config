@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   home.packages = with pkgs; [
     #fonts
     nerd-fonts.jetbrains-mono
@@ -38,7 +34,6 @@
     networkmanagerapplet
     onedrivegui
     postman
-    steam
     stremio-linux-shell
     zed-editor
 
