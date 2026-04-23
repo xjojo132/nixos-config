@@ -5,6 +5,7 @@
 
     # Terminal & shell tools
     kitty
+    ghostty 
     starship
     fzf
     bat

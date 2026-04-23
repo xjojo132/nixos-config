@@ -33,6 +33,8 @@
 
   services.xserver.enable = true;
   # Enable the KDE Plasma Desktop Environment.
+
+  # programs enable thing all here
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
@@ -41,8 +43,22 @@
     xwayland.enable = true;
   };
   services.gnome.gnome-keyring.enable = true;
-
   security.pam.services.sddm.enableGnomeKeyring = true;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+  };
+
+  programs.firefox.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+  environment.systemPackages = with pkgs; [
+    vim
+    git
+  ];
+  programs.zsh.enable = true;
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -54,10 +70,6 @@
     enable32Bit = true;
   };
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true;
-  };
   services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
     modesetting.enable = true;
@@ -101,17 +113,8 @@
   };
 
   # Install firefox.
-  programs.firefox.enable = true;
 
   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim
-    git
-  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -120,7 +123,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.zsh.enable = true;
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.

@@ -11,6 +11,7 @@
         git commit -m "chore: bump flake inputs" && \
         git push
       '';
+      nix-switch = ''sudo nixos-rebuild switch --flake '.#xander' '';
     };
 
     syntaxHighlighting.enable = true;
