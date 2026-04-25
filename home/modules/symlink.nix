@@ -14,6 +14,7 @@
     "starship.toml" = "starship/starship.toml";
     "rofi" = "rofi";
     "helix" = "helix";
+    "ghostty" = "ghostty";
   };
   # homeLinks = {
   #   ".zshrc"  = "zsh/.zshrc";

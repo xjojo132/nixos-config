@@ -84,6 +84,16 @@ format = '[[ $symbol $branch ](fg:crust bg:yellow)]($style)'
 [git_status]
 style = "bg:yellow"
 format = '[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'
+up_to_date = '[✓ ](fg:crust bg:yellow)'
+untracked = '[?\($count\)](fg:crust bg:yellow)'
+stashed = '[\$ ](fg:crust bg:yellow)'
+modified = '[!\($count\) ](fg:crust bg:yellow)'
+renamed = '[»\($count\) ](fg:crust bg:yellow)'
+deleted = '[✘\($count\) ](fg:crust bg:yellow)'
+staged = '[++\($count\) ](fg:crust bg:yellow)'
+ahead = '[⇡\(${count}\) ](fg:crust bg:yellow)'
+diverged = '[⇕⇡\(${ahead_count}\)⇣\(${behind_count}\) ](fg:crust bg:yellow)'
+behind = '[⇣\(${count}\) ](fg:crust bg:yellow)'
 
 [nodejs]
 symbol = ""
@@ -241,7 +251,7 @@ surface1 = "#bcc0cc"
 surface0 = "#ccd0da"
 base = "#eff1f5"
 mantle = "#e6e9ef"
-crust = "#dce0e8"
+crust = "#191724"
 
 [palettes.catppuccin_macchiato]
 rosewater = "#f4dbd6"
@@ -270,3 +280,32 @@ surface0 = "#363a4f"
 base = "#24273a"
 mantle = "#1e2030"
 crust = "#181926"
+
+
+[palettes.rose_pine_moon]
+rosewater = "#ea9a97"   # rose
+flamingo = "#eb6f92"    # love
+pink = "#eb6f92"        # love
+mauve = "#c4a7e7"       # iris
+red = "#eb6f92"         # love  → first segment bg
+maroon = "#ea9a97"      # rose
+peach = "#f6c177"       # gold  → directory bg
+yellow = "#f6c177"      # gold  → git segment bg
+green = "#9ccfd8"       # foam  → languages bg
+teal = "#9ccfd8"        # foam
+sky = "#9ccfd8"         # foam
+sapphire = "#3e8fb0"    # pine  → conda bg
+blue = "#3e8fb0"        # pine
+lavender = "#c4a7e7"    # iris  → time bg
+text = "#e0def4"
+subtext1 = "#908caa"    # subtle
+subtext0 = "#6e6a86"    # muted
+overlay2 = "#56526e"    # highlight high
+overlay1 = "#44415a"    # highlight med
+overlay0 = "#2a283e"    # highlight low
+surface2 = "#393552"    # overlay
+surface1 = "#2a273f"    # surface
+surface0 = "#2a273f"    # surface
+base = "#232136"
+mantle = "#1f1d2e"
+crust = "#191724"       # darkest → used as fg text on segments
