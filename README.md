@@ -74,7 +74,7 @@ Test it:
 ssh -T git@github.com
 ```
 
-and after if pulled via https switch the config repo to ssh 
+and after if pulled via https switch the repo to ssh 
 
 ```bash
 git remote set-url origin git@github.com:xjojo132/nixos-config.git
