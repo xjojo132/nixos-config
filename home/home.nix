@@ -1,6 +1,6 @@
 {...}: {
   home.sessionVariables = {
-    TERMINAL = "kitty";
+    TERMINAL = "ghostty";
   };
   imports = [
     ./modules/git.nix
