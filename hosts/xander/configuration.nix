@@ -9,7 +9,11 @@
 
   networking.hostName = "xander-mis";
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    wifi.powersave = false;
+  };
+  hardware.enableRedistributableFirmware = true;
   hardware.bluetooth.enable = true;
 
   # Set your time zone.
