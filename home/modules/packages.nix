@@ -5,7 +5,7 @@
 
     # Terminal & shell tools
     kitty
-    ghostty 
+    ghostty
     starship
     fzf
     bat
@@ -22,6 +22,7 @@
     postgresql
     yazi
     lazygit
+    pnpm
 
     # Apps
     firefox
