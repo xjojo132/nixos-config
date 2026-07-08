@@ -13,7 +13,6 @@
     vesktop
     discord
     spotify
-    bitwarden-desktop
     docker
     libreoffice
     prismlauncher
