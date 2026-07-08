@@ -7,34 +7,46 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "proxy": "",
+  "context_servers": {},
   "session": {
-    "trust_all_worktrees": true
+    "trust_all_worktrees": true,
   },
+  "code_lens": "on",
   "collaboration_panel": {
-    "dock": "left"
+    "dock": "left",
   },
   "helix_mode": true,
   "vim": {
-    "toggle_relative_line_numbers": true
+    "toggle_relative_line_numbers": true,
   },
   "diff_view_style": "unified",
   "vim_mode": false,
   "agent_servers": {
+    "claude-acp": {
+      "default_config_options": {
+        "mode": "plan",
+        "fast": "off",
+        "effort": "max",
+      },
+      "type": "registry",
+    },
     "github-copilot-cli": {
-      "type": "registry"
+      "type": "registry",
     },
     "github-copilot": {
-      "type": "registry"
-    }
+      "type": "registry",
+    },
   },
   "scroll_sensitivity": 4.0,
   "sticky_scroll": {
-    "enabled": false
+    "enabled": false,
   },
   "window_decorations": "client",
   "excerpt_context_lines": 2,
   "show_wrap_guides": true,
   "git_panel": {
+    "group_by": "status",
     "dock": "left",
     "collapse_untracked_diff": false,
     "tree_view": true,
@@ -56,6 +68,13 @@
         },
         "attribute": {
           "color": "#ff9e64",
+        },
+      },
+    },
+    "Rosé Pine Moon": {
+      "syntax": {
+        "hint": {
+          "color": "#6e6a86",
         },
       },
     },
@@ -100,7 +119,7 @@
   "multi_cursor_modifier": "alt",
   "edit_predictions": {
     "copilot": {
-      "enable_next_edit_suggestions": true
+      "enable_next_edit_suggestions": true,
     },
     "provider": "zed",
     "disabled_globs": [],
@@ -113,7 +132,7 @@
   "rounded_selection": true,
   "buffer_line_height": "comfortable",
   "calls": {
-    "mute_on_join": false,
+    "mute_on_join": true,
   },
   "show_signature_help_after_edits": false,
   "completions": {
@@ -141,12 +160,12 @@
     "git_status": true,
   },
   "title_bar": {
+    "show_branch_status_icon": true,
     "show_project_items": true,
     "show_sign_in": true,
     "show_user_picture": true,
     "show_onboarding_banner": true,
     "show_menus": false,
-    "show_branch_icon": true,
   },
   "project_panel": {
     "indent_size": 20.0,
@@ -195,6 +214,8 @@
     "button": true,
   },
   "search": {
+    "center_on_match": true,
+    "regex": true,
     "whole_word": false,
     "button": true,
   },
@@ -207,6 +228,7 @@
   "git": {
     "git_gutter": "tracked_files",
     "inline_blame": {
+      "location": "inline",
       "padding": 0,
       "show_commit_summary": false,
     },
@@ -226,6 +248,7 @@
     "git_status": true,
   },
   "terminal": {
+    "copy_on_select": true,
     "working_directory": "current_project_directory",
     "default_height": 320.0,
     "default_width": 640.0,
@@ -275,35 +298,30 @@
     },
   },
   "disable_ai": false,
-  "lsp": {
-    "deno": {
-      "settings": {
-        "deno": {
-          "enable": true,
-        },
-      },
-    },
-  },
   "languages": {
     "JavaScript": {
       "language_servers": [
-        "deno",
-        "!typescript-language-server",
+        "!deno",
+        "typescript-language-server",
         "!vtsls",
-        "!eslint",
+        "eslint",
         "tailwindcss-language-server",
       ],
-      "formatter": [{ "language_server": { "name": "deno" } }],
+      "formatter": [
+        { "language_server": { "name": "prettier" } },
+      ],
     },
     "TSX": {
       "language_servers": [
-        "deno",
-        "!typescript-language-server",
+        "!deno",
+        "typescript-language-server",
         "!vtsls",
-        "!eslint",
+        "eslint",
         "tailwindcss-language-server",
       ],
-      "formatter": [{ "language_server": { "name": "deno" } }],
+      "formatter": [
+        { "language_server": { "name": "prettier" } },
+      ],
       "inlay_hints": {
         "enabled": true,
         "show_type_hints": false,
@@ -312,13 +330,15 @@
     },
     "TypeScript": {
       "language_servers": [
-        "deno",
-        "!typescript-language-server",
+        "!deno",
+        "typescript-language-server",
         "!vtsls",
-        "!eslint",
+        "eslint",
         "tailwindcss-language-server",
       ],
-      "formatter": [{ "language_server": { "name": "deno" } }],
+      "formatter": [
+        { "language_server": { "name": "prettier" } },
+      ],
       "inlay_hints": {
         "enabled": true,
         "show_type_hints": false,
