@@ -6,12 +6,13 @@
   dotfiles = "${config.home.homeDirectory}/nixos-config/dotfiles";
   link = path: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${path}";
 
-  # Desktop-only dotfiles — Linux/NixOS (Hyprland) profile only.
+  # Linux desktop (Hyprland/Wayland) configs — NixOS profile only.
+  # These target Linux compositors and have no effect on macOS, so they
+  # stay out of the lean profile. Cross-platform app configs go in
+  # symlinks-common.nix instead.
   xdgLinks = {
     "hypr" = "hypr";
-    "kitty" = "kitty";
     "waybar" = "waybar";
-    "zed" = "zed";
     "rofi" = "rofi";
   };
 in {
