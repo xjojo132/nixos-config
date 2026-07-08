@@ -41,12 +41,12 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.extraSpecialArgs = extraSpecialArgs;
-          home-manager.users.xander = import ./home/nixos.nix;
+          home-manager.users.xander = import ./home/system.nix;
         }
       ];
     };
 
-    # ── Standalone Home Manager — lean profile ───────────────────
+    # ── Standalone Home Manager — "home-manager" profile ─────────
     # Shell + dev tooling only (no GUI apps). Apply with:
     #   home-manager switch --flake '.#xander@mac'      (this Mac)
     #   home-manager switch --flake '.#xander@linux'    (non-NixOS Linux)
@@ -56,7 +56,7 @@
       pkgs = pkgsFor "aarch64-darwin";
       inherit extraSpecialArgs;
       modules = [
-        ./home/lean.nix
+        ./home/home-manager.nix
         {home.homeDirectory = "/Users/xander";}
       ];
     };
@@ -66,7 +66,7 @@
       pkgs = pkgsFor "x86_64-linux";
       inherit extraSpecialArgs;
       modules = [
-        ./home/lean.nix
+        ./home/home-manager.nix
         {home.homeDirectory = "/home/xander";}
       ];
     };

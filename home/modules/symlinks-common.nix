@@ -6,7 +6,8 @@
   dotfiles = "${config.home.homeDirectory}/nixos-config/dotfiles";
   link = path: config.lib.file.mkOutOfStoreSymlink "${dotfiles}/${path}";
 
-  # Cross-platform app configs — symlinked on EVERY machine (lean + full).
+  # Cross-platform app configs — symlinked on EVERY machine
+  # (both the "home-manager" and "system" profiles).
   #
   # To add another config in the future, add a line:
   #     "<name under ~/.config>" = "<path under dotfiles/>";

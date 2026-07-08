@@ -1,6 +1,6 @@
 {...}: {
-  # FULL profile — the shared base plus everything that only makes
-  # sense on the NixOS desktop: GUI apps and the Hyprland/Wayland stack.
+  # "system" profile — the shared base plus everything that only makes
+  # sense on the full NixOS desktop: GUI apps and the Hyprland/Wayland stack.
   # Used by nixosConfigurations.xander in flake.nix.
   imports = [
     ./base.nix

@@ -1,7 +1,7 @@
 {...}: {
   # Shared Home Manager config used by EVERY machine:
-  # the full NixOS profile (home/nixos.nix) and the lean
-  # standalone profile (home/lean.nix) both import this.
+  # the "system" profile (home/system.nix, full NixOS) and the
+  # "home-manager" profile (home/home-manager.nix, standalone) both import this.
   #
   # Only put cross-platform things here — anything added here is
   # installed on macOS and non-NixOS Linux too.
@@ -23,6 +23,6 @@
   programs.home-manager.enable = true;
 
   # NOTE: home.homeDirectory is intentionally NOT set here — it differs
-  # per machine and is set by home/nixos.nix (/home/xander) or injected
-  # per-output in flake.nix for the standalone lean profiles.
+  # per machine and is set by home/system.nix (/home/xander) or injected
+  # per-output in flake.nix for the standalone home-manager profiles.
 }

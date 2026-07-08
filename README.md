@@ -1,6 +1,16 @@
 # nixos-config
 
-My personal NixOS configuration using flakes and Home Manager.
+My personal NixOS + Home Manager configuration using flakes.
+
+One shared config drives two profiles:
+
+- **`system`** — the full NixOS desktop: shared base **+** GUI apps **+** the
+  Hyprland/Wayland stack. Applied with `nixos-rebuild` on my NixOS machine.
+- **`home-manager`** — a lean, standalone Home Manager config (shell + dev
+  tooling only, no GUI apps) for machines that are **not** NixOS: macOS and
+  non-NixOS Linux. Applied with `home-manager switch`.
+
+Both import `home/base.nix`, so shared settings live in one place.
 
 ## Structure
 
@@ -8,16 +18,34 @@ My personal NixOS configuration using flakes and Home Manager.
 nixos-config/
 ├── flake.nix
 ├── home/
-│   ├── home.nix
-│   └── modules/        # git, zsh, ssh, packages, symlinks
+│   ├── base.nix            # shared by every machine (cli, git, zsh, ssh, common symlinks)
+│   ├── system.nix          # full NixOS profile  = base + apps + desktop + hypr symlinks
+│   ├── home-manager.nix    # lean standalone profile = base only
+│   └── modules/
+│       ├── cli.nix             # cross-platform CLI/dev packages
+│       ├── apps.nix            # GUI apps (NixOS only)
+│       ├── desktop.nix         # Hyprland/Wayland stack (NixOS only)
+│       ├── git.nix / zsh.nix / ssh.nix
+│       ├── symlinks-common.nix   # app configs linked everywhere (ghostty, helix, starship, kitty, zed)
+│       └── symlinks-desktop.nix  # Hyprland desktop configs (NixOS only: hypr, waybar, rofi)
 ├── hosts/
 │   └── xander/
 │       ├── configuration.nix
 │       └── hardware-configuration.nix
-└── dotfiles/           # symlinked into ~/.config
+└── dotfiles/               # out-of-store symlinked into ~/.config
 ```
 
-## New System Setup
+## Flake outputs
+
+| Output | System | Profile | Apply with |
+|---|---|---|---|
+| `nixosConfigurations.xander` | `x86_64-linux` | `system` (full) | `sudo nixos-rebuild switch --flake '.#xander'` |
+| `homeConfigurations."xander@mac"` | `aarch64-darwin` | `home-manager` (lean) | `home-manager switch --flake '.#xander@mac'` |
+| `homeConfigurations."xander@linux"` | `x86_64-linux` | `home-manager` (lean) | `home-manager switch --flake '.#xander@linux'` |
+
+---
+
+## New NixOS system setup
 
 ### 1. Install NixOS
 
@@ -38,11 +66,12 @@ The `hardware-configuration.nix` in this repo is specific to my machine. Replace
 nixos-generate-config --show-hardware-config > hosts/xander/hardware-configuration.nix
 ```
 
-or to just copy if you have a existing `hardware-configuration.nix`
+or copy an existing one:
 
 ```bash
 cp /etc/nixos/hardware-configuration.nix ~/nixos-config/hosts/xander/hardware-configuration.nix
 ```
+
 > Review the output and make sure the disk UUIDs and kernel modules look correct before continuing.
 
 ### 4. Apply the config
@@ -59,77 +88,95 @@ passwd xander
 
 ### 6. Set up GitHub SSH key
 
-Generate a key and add it to your GitHub account:
-
 ```bash
 ssh-keygen -t ed25519 -C "xj.remmelink@gmail.com"
 cat ~/.ssh/id_ed25519.pub
 ```
 
-Copy the output and add it at: https://github.com/settings/keys
-
-Test it:
+Add the output at https://github.com/settings/keys, then test:
 
 ```bash
 ssh -T git@github.com
 ```
 
-and after if pulled via https switch the repo to ssh 
+If you cloned over HTTPS, switch the remote to SSH:
 
 ```bash
 git remote set-url origin git@github.com:xjojo132/nixos-config.git
 ```
+
 ---
 
-## Home Manager (standalone, non-NixOS)
+## Home Manager on a non-NixOS machine (macOS / other Linux)
 
-If you want to use just the Home Manager config on a non-NixOS system (e.g. Manjaro):
+Uses the lean `home-manager` profile — shell + dev tooling only, no GUI apps
+(so it won't duplicate apps installed via Homebrew, the App Store, or a native
+package manager).
 
 ```bash
-# Install nix
+# Install nix (macOS or Linux)
 sh <(curl -L https://nixos.org/nix/install) --daemon
 
 # Enable flakes
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
-# Clone the repo
+# Clone the repo (keep it at ~/nixos-config — the dotfile symlinks point here)
 git clone https://github.com/xjojo132/nixos-config ~/nixos-config
 cd ~/nixos-config
 
-# Apply home manager config
-nix run home-manager -- switch --flake '.#xander'
+# Apply — pick the target for this machine:
+nix run home-manager -- switch --flake '.#xander@mac'     # macOS (Apple Silicon)
+nix run home-manager -- switch --flake '.#xander@linux'   # non-NixOS Linux (x86_64)
 ```
 
-> Note: system-level options in `configuration.nix` (like NVIDIA drivers, bootloader, etc.) won't apply — those are NixOS-only.
+After the first activation the `home-manager` command is available directly, so
+later runs are just `home-manager switch --flake '.#xander@mac'`.
+
+> Tip: if existing dotfiles block the first switch ("would be clobbered"), add
+> `-b backup` to rename them to `*.backup` instead of failing.
+
+> Note: system-level options in `configuration.nix` (NVIDIA drivers, bootloader,
+> desktop environment, etc.) are NixOS-only and do not apply here.
 
 ---
 
 ## Updating
 
-The `nix-update` alias handles a full flake update + rebuild + commit in one step:
+The `nix-update` alias does a full flake update + rebuild + commit in one step
+(NixOS):
 
 ```bash
 nix-update
 ```
 
-This will:
 1. `cd ~/nixos-config`
-2. Run `nix flake update` to bump all inputs (nixpkgs, home-manager)
-3. Rebuild and switch with `sudo nixos-rebuild switch --flake '.#xander'`
-4. Commit the updated `flake.lock` and push to GitHub
+2. `nix flake update` — bump all inputs (nixpkgs, home-manager)
+3. `sudo nixos-rebuild switch --flake '.#xander'`
+4. Commit the updated `flake.lock` and push
 
 ---
 
-## Adding new config 
+## Adding config
 
-For new config, add a row here in `home.nix` (note the entire dir gets symlinked):
+### Packages
 
-```bash
+- Cross-platform CLI/dev tool → `home/modules/cli.nix` (installed everywhere).
+- GUI app / Hyprland tool → `home/modules/apps.nix` or `home/modules/desktop.nix`
+  (NixOS `system` profile only).
 
+### Dotfiles (symlinked from `dotfiles/`)
+
+- Cross-platform app config (linked on every machine) → add a line to
+  `home/modules/symlinks-common.nix`.
+- Linux desktop / Hyprland config (NixOS only) → add it to
+  `home/modules/symlinks-desktop.nix`.
+
+```nix
 xdgLinks = {
-    "hypr" = "hypr";
-    "kitty" = "kitty";
-    "DIR_NAME_FROM_DOTFILES_DIR" = "DIR_NAME_THAT_WILL_BE_IN_~/.config";
-  };  
+  # link a whole ~/.config/<name> folder:
+  "kitty" = "kitty";                  # "<name in ~/.config>" = "<path in dotfiles/>"
+  # or link just one file, leaving the rest of the folder as local files:
+  "zed/settings.json" = "zed/settings.json";
+};
 ```
