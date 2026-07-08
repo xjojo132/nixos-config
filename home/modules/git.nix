@@ -1,7 +1,7 @@
 {...}: {
   programs.git = {
     enable = true;
-    settings.user.name = "xjojo132";
+    settings.user.name = "Xander Remmelink";
     settings.user.email = "xj.remmelink@gmail.com";
 
     settings = {
@@ -33,6 +33,7 @@
       "node_modules"
       ".env"
       ".env.local"
+      "**/.claude/settings.local.json"
     ];
   };
 }

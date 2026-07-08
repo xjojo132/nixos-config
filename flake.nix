@@ -1,5 +1,5 @@
 {
-  description = "Xander's NixOS config";
+  description = "Xander's NixOS + Home Manager config";
 
   inputs = {
     # Pin nixpkgs to a specific channel — "nixos-unstable" for latest packages
@@ -18,16 +18,20 @@
     home-manager,
     ...
   } @ inputs: let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    # Build a nixpkgs set for a given system, with unfree packages allowed.
+    pkgsFor = system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+    # Passed to every Home Manager module so they can reach flake inputs.
+    extraSpecialArgs = {inherit inputs;};
   in {
-    # Your NixOS system config
-    homeConfigurations.xander = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-      modules = ["./home/home.nix"];
-    };
+    # ── Full NixOS system (Linux) ────────────────────────────────
+    # Everything: the shared base + GUI apps + Hyprland/desktop stack.
     nixosConfigurations.xander = nixpkgs.lib.nixosSystem {
-      inherit system;
+      system = "x86_64-linux";
       modules = [
         ./hosts/xander/configuration.nix
 
@@ -36,9 +40,34 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {inherit inputs;};
-          home-manager.users.xander = import ./home/home.nix;
+          home-manager.extraSpecialArgs = extraSpecialArgs;
+          home-manager.users.xander = import ./home/nixos.nix;
         }
+      ];
+    };
+
+    # ── Standalone Home Manager — lean profile ───────────────────
+    # Shell + dev tooling only (no GUI apps). Apply with:
+    #   home-manager switch --flake '.#xander@mac'      (this Mac)
+    #   home-manager switch --flake '.#xander@linux'    (non-NixOS Linux)
+
+    # macOS (Apple Silicon)
+    homeConfigurations."xander@mac" = home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgsFor "aarch64-darwin";
+      inherit extraSpecialArgs;
+      modules = [
+        ./home/lean.nix
+        {home.homeDirectory = "/Users/xander";}
+      ];
+    };
+
+    # non-NixOS Linux (x86_64)
+    homeConfigurations."xander@linux" = home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgsFor "x86_64-linux";
+      inherit extraSpecialArgs;
+      modules = [
+        ./home/lean.nix
+        {home.homeDirectory = "/home/xander";}
       ];
     };
   };

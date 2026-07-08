@@ -292,5 +292,5 @@ add-zsh-hook precmd mzc_termsupport_cwd
 
 # File and Dir colors for ls and other outputs
 export LS_OPTIONS='--color=auto'
-eval "$(dircolors -b)"
+command -v dircolors >/dev/null && eval "$(dircolors -b)"
 alias ls='ls $LS_OPTIONS'
