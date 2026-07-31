@@ -1,311 +1,245 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
+# Rosé Pine Moon — "airy" two-line prompt.
+#
+# No backgrounds anywhere: all colour lives in the glyphs, so the prompt stays
+# light against Ghostty's black-at-85% backdrop (see dotfiles/ghostty/config).
+#
+# Two rules hold the design together:
+#   1. Line 2 is always exactly "❯ " — duration, exit code and everything else
+#      stay on line 1, so typed commands always start at the same column.
+#   2. Nothing renders when it has nothing to say. Clean repo → no git status.
+#      Fast command → no timer. Success → no exit code.
+#
+#   󰀵 ~/dev/nixos-config   main !2 +1   22.14.0
+#   ❯ nix flake update
+#
+#   󰀵 ~/dev/api-server   feat/auth ?3   3.12.1  󱎫 4.2s  ✘ 1
+#   ❯
+
 format = """
-[](red)\
 $os\
-$username\
-[](bg:peach fg:red)\
 $directory\
-[](bg:yellow fg:peach)\
 $git_branch\
+$git_state\
 $git_status\
-[](fg:yellow bg:green)\
+$nix_shell\
 $c\
-$rust\
 $golang\
-$nodejs\
-$php\
+$haskell\
 $java\
 $kotlin\
-$haskell\
+$nodejs\
+$php\
 $python\
-[](fg:green bg:sapphire)\
+$rust\
 $conda\
-[](fg:sapphire bg:lavender)\
-$time\
-[ ](fg:lavender)\
 $cmd_duration\
+$status\
 $line_break\
 $character"""
 
-palette = 'catppuccin_latte'
+palette = 'rose_pine_moon'
+
+# ── Context ──────────────────────────────────────────────────────────────────
 
 [os]
 disabled = false
-style = "bg:red fg:crust"
+style = "fg:muted"
+format = '[$symbol ]($style)'
 
 [os.symbols]
-Windows = ""
-Ubuntu = "󰕈"
-SUSE = ""
-Raspbian = "󰐿"
-Mint = "󰣭"
 Macos = "󰀵"
-Manjaro = ""
+NixOS = ""
 Linux = "󰌽"
-Gentoo = "󰣨"
-Fedora = "󰣛"
-Alpine = ""
-Amazon = ""
-Android = ""
-AOSC = ""
 Arch = "󰣇"
-Artix = "󰣇"
-CentOS = ""
 Debian = "󰣚"
-Redhat = "󱄛"
-NixOS = " "
-RedHatEnterprise = "󱄛"
+Ubuntu = "󰕈"
+Fedora = "󰣛"
+Alpine = ""
+Manjaro = ""
+Windows = ""
 
-[username]
-show_always = true
-style_user = "bg:red fg:crust"
-style_root = "bg:red fg:crust"
-format = '[$user]($style)'
-
+# The repo root is bold iris, the path above it recedes to muted. This is what
+# makes the project name pop without needing a separate module.
 [directory]
-style = "bg:peach fg:crust"
-format = "[ $path ]($style)"
-truncation_length = 3
+style = "fg:foam"
+before_repo_root_style = "fg:muted"
+repo_root_style = "bold fg:iris"
+truncate_to_repo = false
+truncation_length = 5
 truncation_symbol = "…/"
+read_only = " "
+read_only_style = "fg:love"
+format = '[$path]($style)[$read_only]($read_only_style) '
+repo_root_format = '[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) '
 
+# No trailing spaces here — the old powerline format padded segments, this one
+# doesn't, so a trailing space would leak into the path.
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Developer" = "󰲋 "
+"Documents" = "󰈙"
+"Downloads" = ""
+"Music" = "󰝚"
+"Pictures" = ""
+"Developer" = "󰲋"
+
+# ── Git ──────────────────────────────────────────────────────────────────────
 
 [git_branch]
-symbol = ""
-style = "bg:yellow"
-format = '[[ $symbol $branch ](fg:crust bg:yellow)]($style)'
+symbol = ""
+style = "fg:rose"
+format = '[$symbol $branch]($style) '
 
+# Only renders mid-rebase / mid-merge / mid-bisect.
+[git_state]
+style = "bold fg:love"
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+
+# The outer (…) collapses the whole segment when the tree is clean, so an
+# untouched repo shows nothing at all after the branch name.
 [git_status]
-style = "bg:yellow"
-format = '[[($all_status$ahead_behind )](fg:crust bg:yellow)]($style)'
-up_to_date = '[✓ ](fg:crust bg:yellow)'
-untracked = '[?\($count\)](fg:crust bg:yellow)'
-stashed = '[\$ ](fg:crust bg:yellow)'
-modified = '[!\($count\) ](fg:crust bg:yellow)'
-renamed = '[»\($count\) ](fg:crust bg:yellow)'
-deleted = '[✘\($count\) ](fg:crust bg:yellow)'
-staged = '[++\($count\) ](fg:crust bg:yellow)'
-ahead = '[⇡\(${count}\) ](fg:crust bg:yellow)'
-diverged = '[⇕⇡\(${ahead_count}\)⇣\(${behind_count}\) ](fg:crust bg:yellow)'
-behind = '[⇣\(${count}\) ](fg:crust bg:yellow)'
+style = "fg:gold"
+format = '([$all_status$ahead_behind]($style))'
+up_to_date = ''
+conflicted = '[~$count ](fg:love)'
+deleted    = '[✘$count ](fg:love)'
+modified   = '[!$count ](fg:gold)'
+staged     = '[+$count ](fg:foam)'
+renamed    = '[»$count ](fg:rose)'
+untracked  = '[?$count ](fg:subtle)'
+stashed    = '[\$$count ](fg:iris)'
+ahead      = '[⇡$count ](fg:pine)'
+behind     = '[⇣$count ](fg:pine)'
+diverged   = '[⇕⇡$ahead_count⇣$behind_count ](fg:pine)'
 
-[nodejs]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+# ── Environment ──────────────────────────────────────────────────────────────
+
+# heuristic = true is what detects `nix develop`, which doesn't set IN_NIX_SHELL.
+[nix_shell]
+symbol = ""
+style = "fg:foam"
+heuristic = true
+impure_msg = '[impure](fg:gold)'
+pure_msg = '[pure](fg:foam)'
+unknown_msg = '[nix](fg:subtle)'
+format = '[$symbol ]($style)$state[( \($name\))](fg:subtle) '
+
+# ── Toolchains ───────────────────────────────────────────────────────────────
+# One shape for all of them: icon in pine, version dimmed to subtle.
 
 [c]
-symbol = " "
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[rust]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
 
 [golang]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[php]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[java]
-symbol = " "
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
-
-[kotlin]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
 
 [haskell]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version) ](fg:crust bg:green)]($style)'
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
+
+[java]
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
+
+[kotlin]
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
+
+[nodejs]
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
+
+[php]
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
 
 [python]
-symbol = ""
-style = "bg:green"
-format = '[[ $symbol( $version)(\(#$virtualenv\)) ](fg:crust bg:green)]($style)'
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle)[( \($virtualenv\))](fg:muted) '
 
-[docker_context]
-symbol = ""
-style = "bg:sapphire"
-format = '[[ $symbol( $context) ](fg:crust bg:sapphire)]($style)'
+[rust]
+symbol = ""
+style = "fg:pine"
+version_format = "${raw}"
+format = '[$symbol ]($style)[($version)](fg:subtle) '
 
 [conda]
-symbol = "  "
-style = "fg:crust bg:sapphire"
-format = '[$symbol$environment ]($style)'
+symbol = ""
+style = "fg:pine"
 ignore_base = false
+format = '[$symbol ]($style)[$environment](fg:subtle) '
 
-[time]
+# ── Feedback ─────────────────────────────────────────────────────────────────
+
+[cmd_duration]
+min_time = 2000
+style = "fg:muted"
+format = '[󱎫 $duration]($style) '
+
+# Off by default in starship; shows the exit code of a failed command.
+[status]
 disabled = false
-time_format = "%R"
-style = "bg:lavender"
-format = '[[  $time ](fg:crust bg:lavender)]($style)'
-
-[line_break]
-disabled = true
+style = "fg:love"
+symbol = "✘"
+success_symbol = ""
+not_executable_symbol = "󰅚"
+not_found_symbol = "󰍉"
+sigint_symbol = "󰂭"
+signal_symbol = "⚡"
+map_symbol = true
+format = '[$symbol $status]($style) '
 
 [character]
-disabled = false
-success_symbol = '[❯](bold fg:green)'
-error_symbol = '[❯](bold fg:red)'
-vimcmd_symbol = '[❮](bold fg:green)'
-vimcmd_replace_one_symbol = '[❮](bold fg:lavender)'
-vimcmd_replace_symbol = '[❮](bold fg:lavender)'
-vimcmd_visual_symbol = '[❮](bold fg:yellow)'
+success_symbol = '[❯](fg:iris)'
+error_symbol = '[❯](fg:love)'
+vimcmd_symbol = '[❮](fg:foam)'
+vimcmd_visual_symbol = '[❮](fg:rose)'
+vimcmd_replace_symbol = '[❮](fg:gold)'
+vimcmd_replace_one_symbol = '[❮](fg:gold)'
 
-[palettes.catppuccin_mocha]
-rosewater = "#f5e0dc"
-flamingo = "#f2cdcd"
-pink = "#f5c2e7"
-mauve = "#cba6f7"
-red = "#f38ba8"
-maroon = "#eba0ac"
-peach = "#fab387"
-yellow = "#f9e2af"
-green = "#a6e3a1"
-teal = "#94e2d5"
-sky = "#89dceb"
-sapphire = "#74c7ec"
-blue = "#89b4fa"
-lavender = "#b4befe"
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-subtext0 = "#a6adc8"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-overlay0 = "#6c7086"
-surface2 = "#585b70"
-surface1 = "#45475a"
-surface0 = "#313244"
-base = "#1e1e2e"
-mantle = "#181825"
-crust = "#11111b"
+# Clock is off by design — line 1 stays quiet. To bring it back either add
+# `$time` to `format` above (before `$cmd_duration`), or right-align it with:
+#     right_format = """$time"""
+[time]
+disabled = true
+time_format = "%R"
+style = "fg:muted"
+format = '[ $time]($style) '
 
-[palettes.catppuccin_frappe]
-rosewater = "#f2d5cf"
-flamingo = "#eebebe"
-pink = "#f4b8e4"
-mauve = "#ca9ee6"
-red = "#e78284"
-maroon = "#ea999c"
-peach = "#ef9f76"
-yellow = "#e5c890"
-green = "#a6d189"
-teal = "#81c8be"
-sky = "#99d1db"
-sapphire = "#85c1dc"
-blue = "#8caaee"
-lavender = "#babbf1"
-text = "#c6d0f5"
-subtext1 = "#b5bfe2"
-subtext0 = "#a5adce"
-overlay2 = "#949cbb"
-overlay1 = "#838ba7"
-overlay0 = "#737994"
-surface2 = "#626880"
-surface1 = "#51576d"
-surface0 = "#414559"
-base = "#303446"
-mantle = "#292c3c"
-crust = "#232634"
-
-[palettes.catppuccin_latte]
-rosewater = "#dc8a78"
-flamingo = "#dd7878"
-pink = "#ea76cb"
-mauve = "#8839ef"
-red = "#d20f39"
-maroon = "#e64553"
-peach = "#fe640b"
-yellow = "#df8e1d"
-green = "#40a02b"
-teal = "#179299"
-sky = "#04a5e5"
-sapphire = "#209fb5"
-blue = "#1e66f5"
-lavender = "#7287fd"
-text = "#4c4f69"
-subtext1 = "#5c5f77"
-subtext0 = "#6c6f85"
-overlay2 = "#7c7f93"
-overlay1 = "#8c8fa1"
-overlay0 = "#9ca0b0"
-surface2 = "#acb0be"
-surface1 = "#bcc0cc"
-surface0 = "#ccd0da"
-base = "#eff1f5"
-mantle = "#e6e9ef"
-crust = "#191724"
-
-[palettes.catppuccin_macchiato]
-rosewater = "#f4dbd6"
-flamingo = "#f0c6c6"
-pink = "#f5bde6"
-mauve = "#c6a0f6"
-red = "#ed8796"
-maroon = "#ee99a0"
-peach = "#f5a97f"
-yellow = "#eed49f"
-green = "#a6da95"
-teal = "#8bd5ca"
-sky = "#91d7e3"
-sapphire = "#7dc4e4"
-blue = "#8aadf4"
-lavender = "#b7bdf8"
-text = "#cad3f5"
-subtext1 = "#b8c0e0"
-subtext0 = "#a5adcb"
-overlay2 = "#939ab7"
-overlay1 = "#8087a2"
-overlay0 = "#6e738d"
-surface2 = "#5b6078"
-surface1 = "#494d64"
-surface0 = "#363a4f"
-base = "#24273a"
-mantle = "#1e2030"
-crust = "#181926"
-
+# ── Palette ──────────────────────────────────────────────────────────────────
+# Canonical Rosé Pine Moon. https://rosepinetheme.com/palette/ingredients/
 
 [palettes.rose_pine_moon]
-rosewater = "#ea9a97"   # rose
-flamingo = "#eb6f92"    # love
-pink = "#eb6f92"        # love
-mauve = "#c4a7e7"       # iris
-red = "#eb6f92"         # love  → first segment bg
-maroon = "#ea9a97"      # rose
-peach = "#f6c177"       # gold  → directory bg
-yellow = "#f6c177"      # gold  → git segment bg
-green = "#9ccfd8"       # foam  → languages bg
-teal = "#9ccfd8"        # foam
-sky = "#9ccfd8"         # foam
-sapphire = "#3e8fb0"    # pine  → conda bg
-blue = "#3e8fb0"        # pine
-lavender = "#c4a7e7"    # iris  → time bg
-text = "#e0def4"
-subtext1 = "#908caa"    # subtle
-subtext0 = "#6e6a86"    # muted
-overlay2 = "#56526e"    # highlight high
-overlay1 = "#44415a"    # highlight med
-overlay0 = "#2a283e"    # highlight low
-surface2 = "#393552"    # overlay
-surface1 = "#2a273f"    # surface
-surface0 = "#2a273f"    # surface
-base = "#232136"
-mantle = "#1f1d2e"
-crust = "#191724"       # darkest → used as fg text on segments
+base           = "#232136"
+surface        = "#2a273f"
+overlay        = "#393552"
+muted          = "#6e6a86"
+subtle         = "#908caa"
+text           = "#e0def4"
+love           = "#eb6f92"
+gold           = "#f6c177"
+rose           = "#ea9a97"
+pine           = "#3e8fb0"
+foam           = "#9ccfd8"
+iris           = "#c4a7e7"
+highlight_low  = "#2a283e"
+highlight_med  = "#44415a"
+highlight_high = "#56526e"

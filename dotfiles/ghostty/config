@@ -1,13 +1,18 @@
 
 theme = Rose Pine Moon
-background = 000000
-background-opacity = 0.85
+# Deliberate override: Rosé Pine *main*'s base, one step darker (ΔL* -5.4) than
+# Moon's own #232136, which reads washed out at 85% opacity. Still inside the
+# Rosé Pine system — it's the darkest background the palette defines — unlike
+# the plain 000000 this used to be, which desynced the terminal from every
+# other Rosé Pine Moon config (helix, zed, starship).
+# background = #191724
+
 background-blur = false
 confirm-close-surface=false
 
 shell-integration-features = no-cursor,no-sudo,no-title
 gtk-titlebar = false
-font-size=13
+font-size=16
 
 quick-terminal-position = center
 quick-terminal-size = 90%,90%
