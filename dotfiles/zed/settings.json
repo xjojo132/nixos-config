@@ -167,6 +167,7 @@
   },
   "max_tabs": 15,
   "git": {
+    "diff_base": "head",
     "inline_blame": {
       "padding": 0,
     },
