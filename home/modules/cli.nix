@@ -19,6 +19,7 @@
     # Dev toolchains
     nodejs
     pnpm
+    yarn
     uv
     python3
     python3Packages.pip
