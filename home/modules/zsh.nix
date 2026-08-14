@@ -6,17 +6,12 @@
   programs.starship.enable = true;
   programs.zsh = {
     enable = true;
-    shellAliases = {
-      nix-update = ''
-        cd ~/nixos-config && \
-        nix flake update && \
-        sudo nixos-rebuild switch --flake '.#xander' && \
-        git add flake.lock && \
-        git commit -m "chore: bump flake inputs" && \
-        git push
-      '';
-      nix-switch = ''sudo nixos-rebuild switch --flake '.#xander' '';
-    };
+
+    # NOTE: the nix-switch / nix-update rebuild aliases are NOT defined here.
+    # The command differs per profile (nixos-rebuild vs home-manager switch,
+    # and a different flake target per machine), and this module is shared by
+    # all of them — so each entry profile defines its own:
+    # home/system.nix (NixOS) and home/home-manager.nix (standalone).
 
     syntaxHighlighting.enable = true;
     historySubstringSearch.enable = true;
