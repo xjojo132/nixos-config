@@ -7,7 +7,7 @@
     settings = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
-      pull.rebase = false;
+      pull.rebase = true;
       core.editor = "hx";
     };
 
