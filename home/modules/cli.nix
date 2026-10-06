@@ -15,6 +15,10 @@
     fastfetch
     yazi
     lazygit
+    zoxide
+    ripgrep
+    tldr
+    atuin
 
     # Dev toolchains
     nodejs

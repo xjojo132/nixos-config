@@ -7,7 +7,10 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "default_open_behavior": "new_window",
+  "cli_default_open_behavior": "new_window",
   "markdown_preview": {
+    "open_markdown_files_in_preview": true,
     "max_width": 1000.0,
   },
   "ui_font_family": ".SystemUIFont",
